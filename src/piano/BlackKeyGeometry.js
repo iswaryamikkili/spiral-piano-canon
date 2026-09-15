@@ -1,10 +1,12 @@
 import * as THREE from "three";
 
+
 import {
     WHITE_KEY,
     BLACK_KEY,
     KEYBOARD
 } from "../utils/Constants";
+
 
 export default class BlackKeyGeometry {
     static create(path, boundaryIndex) {
@@ -19,8 +21,12 @@ export default class BlackKeyGeometry {
          * boundaryIndex 1 sits between white keys 0 and 1.
          */
         const boundaryProgress =
-            boundaryIndex / whiteKeyCount;
-
+    THREE.MathUtils.clamp(
+        1 -
+        boundaryIndex / whiteKeyCount,
+        0,
+        1
+    );
         const whiteKeyProgress =
             1 / whiteKeyCount;
 
@@ -29,11 +35,19 @@ export default class BlackKeyGeometry {
             BLACK_KEY.WIDTH_FRACTION *
             0.5;
 
-        const startProgress =
-            boundaryProgress - halfBlackWidth;
-
+            const startProgress =
+            THREE.MathUtils.clamp(
+                boundaryProgress - halfBlackWidth,
+                0,
+                1
+            );
+        
         const endProgress =
-            boundaryProgress + halfBlackWidth;
+            THREE.MathUtils.clamp(
+                boundaryProgress + halfBlackWidth,
+                0,
+                1
+            );
 
         const middleFrame =
             path.getFrameAtProgress(

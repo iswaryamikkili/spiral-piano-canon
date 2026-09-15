@@ -23,10 +23,6 @@ export default class MidiPlaybackController {
         this.orbController =
             orbController;
 
-        /*
-         * Compatible with Tone versions exposing either
-         * getTransport() or the global Transport object.
-         */
         this.transport =
             typeof Tone.getTransport ===
             "function"
@@ -41,11 +37,7 @@ export default class MidiPlaybackController {
 
         this.scheduledEventIds = [];
 
-        /*
-         * Counts overlapping notes on the same key.
-         * This prevents an early note-off from releasing
-         * a second overlapping occurrence of that note.
-         */
+    
         this.keyHoldCounts = new Map();
 
         this.stateListeners = new Set();
@@ -191,9 +183,7 @@ this.jumpingOrbController?.setSequence(
         this.scheduledEventIds.push(
             finishEventId
         );
-
-
-
+        
         this.noteGroups.forEach(
             (group, groupIndex) => {
                 const eventId =
@@ -239,7 +229,7 @@ this.jumpingOrbController?.setSequence(
                     Math.max(
                         note.duration,
                         0.03
-                    ),
+                    )*1000,
 
                 velocity:
                     note.velocity ?? 0.8,
@@ -250,11 +240,7 @@ this.jumpingOrbController?.setSequence(
             }
         );
 
-        // this.orbController.spawn(key);
-        /*
- * Individual rising orbs are reserved for mouse clicks.
- * MIDI uses the jumping melody orb and chord echoes.
- */
+        
     }
 
     handleNoteEnd(key) {
@@ -300,9 +286,6 @@ this.jumpingOrbController?.setSequence(
             return;
         }
 
-        /*
-         * Play from the beginning after stop or finish.
-         */
         this.transport.stop();
         this.transport.seconds = 0;
 
@@ -324,10 +307,6 @@ this.jumpingOrbController?.setSequence(
         this.transport.pause();
         this.jumpingOrbController?.pause();
 
-        /*
-         * Release active audio and visual keys while
-         * paused. Future scheduled events remain intact.
-         */
         this.keySoundController
             .stopAllSounds();
 
@@ -473,9 +452,6 @@ this.jumpingOrbController?.setSequence(
         this.clearSchedule();
         this.stateListeners.clear();
     }
-
-
-
     groupSimultaneousNotes(
         notes,
         tolerance = 0.01

@@ -29,3 +29,14 @@ dist/
 .env
 .env.*
 .vscode/
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
+# Estate Grand audio samples
+# Keep the generated manifest in Git, but not the large local recordings.
+public/audio/estate-grand/Estate Grand Piano Samples/
+
+# Build output
+dist/

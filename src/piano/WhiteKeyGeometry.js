@@ -16,11 +16,23 @@ export default class WhiteKeyGeometry {
         const gap =
             KEYBOARD.KEY_GAP_FRACTION;
 
-        const startProgress =
-            (whiteIndex + gap) / keyCount;
-
+            const startProgress =
+            THREE.MathUtils.clamp(
+                1 -
+                (whiteIndex + 1 - gap) /
+                keyCount,
+                0,
+                1
+            );
+        
         const endProgress =
-            (whiteIndex + 1 - gap) / keyCount;
+            THREE.MathUtils.clamp(
+                1 -
+                (whiteIndex + gap) /
+                keyCount,
+                0,
+                1
+            );
 
         const middleProgress =
             (startProgress + endProgress) * 0.5;

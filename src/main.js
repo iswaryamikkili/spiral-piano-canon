@@ -12,6 +12,11 @@ import KeyPressController from "./interaction/KeyPressController";
 import KeySoundController from "./interaction/KeySoundController";
 import RisingNoteOrbController from "./effects/RisingNoteOrbController";
 
+
+
+import RealPianoEngine
+from "./audio/RealPianoEngine.js";
+
 import MidiJumpingOrbController
     from "./effects/MidiJumpingOrbController";
 
@@ -42,6 +47,21 @@ const keyboard = new KeyboardBuilder(
 );
 
 keyboard.build();
+const realPianoEngine =
+    new RealPianoEngine();
+
+try {
+    await realPianoEngine.load();
+
+    console.log(
+        "Estate Grand engine loaded."
+    );
+} catch (error) {
+    console.error(
+        "Real piano engine failed:",
+        error
+    );
+}
 
 const jumpingOrbController =
     new MidiJumpingOrbController({
@@ -82,15 +102,25 @@ const keyPressController =
         renderer,
         camera,
         scene,
-        flashColor: 0x7dd3fc,
-        flashDuration: 180,
-        noteDuration: "8n",
+
+        pianoEngine:
+            realPianoEngine,
+
+        flashColor:
+            0x7dd3fc,
+
+        flashDuration:
+            180,
+
+        noteDuration:
+            500,
 
         onKeyTriggered: (key) => {
-            orbController.spawn(key);
+            orbController.spawn(
+                key
+            );
         }
     });
-
     
     const midiController =
     new MidiPlaybackController({
@@ -119,6 +149,29 @@ const testPoints = [
     0.75,
     1
 ];
+
+
+
+
+realPianoEngine
+    .load()
+
+.then(() => {
+        console.log(
+            "Estate Grand engine loaded."
+        );
+    })
+    .catch((error) => {
+        console.error(
+            "Real piano engine failed:",
+            error
+        );
+    });
+
+
+
+ 
+    
 const hoverRaycaster = new THREE.Raycaster();
 const hoverMouse = new THREE.Vector2();
 

@@ -16,6 +16,16 @@ export default class KeyboardBuilder {
         this.whiteKeyCount = 0;
         this.whiteKeyMeshes = [];
         this.keysByMidiNumber = new Map();
+
+        this.group =
+    new THREE.Group();
+
+this.group.name =
+    "SpiralPiano";
+
+this.scene.add(
+    this.group
+);
     }
 
     build() {
@@ -26,6 +36,10 @@ export default class KeyboardBuilder {
                 this.addBlackKey(keyData);
             }
         });
+
+        this.group.scale.setScalar(
+            1.5
+        );
     }
 
     addWhiteKey(keyData) {
@@ -58,7 +72,7 @@ this.keysByMidiNumber.set(
     mesh
 );
 
-        this.scene.add(mesh);
+        this.group.add(mesh);
         this.whiteKeyMeshes.push(mesh);
 
         this.whiteKeyCount++;
@@ -118,7 +132,7 @@ mesh.receiveShadow = true;
     );
     
 
-    this.scene.add(mesh);
+    this.group.add(mesh);
 }
 
 getKeyByMidiNumber(midiNumber) {
